@@ -3,240 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аппендикулярии - удивительные морские животные</title>
+    <title>Аппендикулярии - Архитекторы океана</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            background: linear-gradient(180deg, #0a2e5c 0%, #1a5f9c 30%, #87ceeb 100%);
             min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .ocean-waves {
+            height: 100px;
+            background: url('https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&auto=format&fit=crop') repeat-x;
+            background-size: cover;
+            opacity: 0.3;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        
+
         header {
             text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #667eea;
+            box-shadow: 0 10px 30px rgba(0, 40, 100, 0.3);
+            border: 3px solid #4a9bd8;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        header:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #1a5f9c, #4a9bd8, #87ceeb);
+        }
+
         h1 {
-            color: #2c3e50;
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #0a2e5c;
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #0a2e5c, #1a5f9c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2rem;
+            color: #1a5f9c;
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            font-weight: 300;
         }
-        
-        .content {
+
+        .sea-creature {
+            font-size: 2rem;
+            margin: 0 10px;
+            color: #1a5f9c;
+        }
+
+        .content-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
-        
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-        
+
         .card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            border-left: 5px solid #667eea;
-            transition: transform 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-        
-        h3 {
-            color: #667eea;
-            margin: 20px 0 10px 0;
-        }
-        
-        ul {
-            list-style-type: none;
-            padding-left: 20px;
-        }
-        
-        li {
-            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 60, 120, 0.2);
+            transition: all 0.4s ease;
+            border: 2px solid #a8d8ff;
             position: relative;
-            padding-left: 25px;
+            overflow: hidden;
         }
-        
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 80, 160, 0.3);
+        }
+
+        .card:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #1a5f9c, #4a9bd8);
+        }
+
+        h2 {
+            color: #0a2e5c;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #4a9bd8;
+        }
+
+        h3 {
+            color: #1a5f9c;
+            margin: 25px 0 15px 0;
+            font-size: 1.5rem;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 3px solid #4a9bd8;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+        }
+
         li:before {
             content: "🐠";
             position: absolute;
             left: 0;
             top: 0;
+            font-size: 1.2rem;
         }
-        
-        .highlight {
-            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+
+        .bubble {
+            background: linear-gradient(135deg, #e6f7ff, #c2e6ff);
             padding: 25px;
-            border-radius: 15px;
+            border-radius: 20px;
             margin: 30px 0;
-            border: 2px dashed #667eea;
+            border-left: 5px solid #1a5f9c;
+            position: relative;
         }
-        
-        footer {
+
+        .bubble:before {
+            content: "💡";
+            position: absolute;
+            left: -15px;
+            top: 20px;
+            background: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #1a5f9c;
+        }
+
+        .fact-box {
+            background: linear-gradient(135deg, #1a5f9c, #0a2e5c);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 30px 0;
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-            color: #7f8c8d;
-            font-size: 0.9rem;
         }
-        
+
         .btn {
             display: inline-block;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #1a5f9c, #4a9bd8);
             color: white;
-            padding: 12px 30px;
+            padding: 15px 35px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1.1rem;
             margin-top: 20px;
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            box-shadow: 0 5px 15px rgba(26, 95, 156, 0.4);
         }
-        
+
         .btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(26, 95, 156, 0.6);
+            background: linear-gradient(45deg, #0a2e5c, #1a5f9c);
         }
-        
-        .animal-img {
-            width: 100%;
-            border-radius: 10px;
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(10, 46, 92, 0.9);
+            color: white;
+            border-radius: 20px;
+            margin-top: 50px;
+            border-top: 5px solid #4a9bd8;
+        }
+
+        .footer-text {
+            margin: 10px 0;
+            color: #a8d8ff;
+        }
+
+        .marine-icons {
+            font-size: 2rem;
             margin: 20px 0;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .marine-icons i {
+            margin: 0 15px;
+            color: #4a9bd8;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+
+        .water-mark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
+    <div class="ocean-waves"></div>
+    
     <div class="container">
         <header>
-            <h1>Аппендикулярии</h1>
-            <p class="subtitle">Удивительные морские животные класса Личиночно-хордовые</p>
+            <h1><i class="fas fa-water sea-creature"></i> Аппендикулярии <i class="fas fa-fish sea-creature"></i></h1>
+            <p class="subtitle">Микроскопические архитекторы океана | Класс: Личиночно-хордовые</p>
+            <div class="marine-icons">
+                <i class="fas fa-microscope"></i>
+                <i class="fas fa-water"></i>
+                <i class="fas fa-dna"></i>
+                <i class="fas fa-home"></i>
+                <i class="fas fa-recycle"></i>
+            </div>
         </header>
         
-        <div class="content">
+        <div class="content-grid">
+            <!-- КАРТОЧКА 1: Твоя картинка -->
             <div class="card">
-                <h2>Кто они такие?</h2>
-                <p>Аппендикулярии — это мелкие морские организмы, относящиеся к подтипу <strong>Личиночно-хордовые</strong>. Они являются дальними родственниками всех позвоночных животных, включая человека!</p>
+                <h2><i class="fas fa-eye"></i> Внешний вид</h2>
+                <p>Аппендикулярии — это крошечные морские организмы, напоминающие головастиков. Они относятся к <strong>типу Хордовые</strong>, что делает их дальними родственниками всех позвоночных животных.</p>
                 
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Oikopleura_dioica.jpg/800px-Oikopleura_dioica.jpg" alt="Аппендикулярия под микроскопом" class="animal-img" onerror="this.style.display='none'">
+                <div class="image-container">
+                    <!-- ТВОЯ КАРТИНКА -->
+                    <img src="https://avatars.mds.yandex.net/i?id=d9fcaa1fb69e366b1bfb7143ee46894c_l-9145716-images-thumbs&n=13" 
+                         alt="Аппендикулярия под микроскопом" 
+                         onerror="this.src='https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&auto=format&fit=crop'">
+                </div>
                 
-                <h3>Основные характеристики:</h3>
+                <h3><i class="fas fa-ruler"></i> Характеристики:</h3>
                 <ul>
-                    <li>Размер: от 0,5 до 3 см</li>
-                    <li>Форма тела: похожи на головастиков</li>
-                    <li>Хорда сохраняется только в хвосте</li>
-                    <li>Обитают во всех океанах мира</li>
-                    <li>Составляют часть морского планктона</li>
+                    <li><strong>Размер:</strong> 0,5 - 3 см (меньше ногтя!)</li>
+                    <li><strong>Форма:</strong> Тело + хвост с хордой</li>
+                    <li><strong>Обитание:</strong> Все океаны мира</li>
+                    <li><strong>Питание:</strong> Бактерии и нанопланктон</li>
+                    <li><strong>Особенность:</strong> Хорда сохраняется только в хвосте</li>
                 </ul>
             </div>
             
+            <!-- КАРТОЧКА 2: Домик-фильтр -->
             <div class="card">
-                <h2>Уникальные способности</h2>
-                <p>Самое поразительное в аппендикуляриях — их <strong>«домики»</strong> из муцина (гелеобразного вещества).</p>
+                <h2><i class="fas fa-home"></i> Умный домик-фильтр</h2>
+                <p>Самое удивительное в аппендикуляриях — их гелевый домик, который они строят из муцина. Это сложная инженерная конструкция!</p>
                 
-                <div class="highlight">
-                    <h3>Домик-фильтр:</h3>
-                    <p>Каждая аппендикулярия строит вокруг себя прозрачный гелевый домик с сложной системой фильтров. Через эти фильтры она пропускает воду, отлавливая мельчайшие частицы пищи.</p>
+                <div class="image-container">
+                    <!-- Картинка домика -->
+                    <img src="https://www.researchgate.net/profile/Masaki-Yoshida-3/publication/318790972/figure/fig1/AS:614058572693505@1523401370726/Schematic-drawing-of-an-appendicularian-house.png" 
+                         alt="Схема домика-фильтра аппендикулярии"
+                         onerror="this.src='https://images.unsplash.com/photo-1551244072-5d12893278ab?w=800&auto=format&fit=crop'">
                 </div>
                 
-                <h3>Функции домика:</h3>
+                <div class="bubble">
+                    <h3><i class="fas fa-cogs"></i> Как работает домик:</h3>
+                    <p>Аппендикулярия движением хвоста создаёт ток воды через фильтры домика. Вода очищается, а мельчайшие частицы пищи остаются.</p>
+                </div>
+                
+                <h3><i class="fas fa-sync-alt"></i> Одноразовый дом:</h3>
                 <ul>
-                    <li>Фильтрация воды для питания</li>
-                    <li>Защита от хищников</li>
-                    <li>Помощь в плавании</li>
-                    <li>Когда фильтры засоряются, животное покидает домик и строит новый!</li>
+                    <li>Фильтры засоряются за 3-4 часа</li>
+                    <li>Животное покидает старый домик</li>
+                    <li>Строит новый за 15-20 минут</li>
+                    <li>Повторяет до 6 раз в сутки!</li>
                 </ul>
             </div>
-        </div>
-        
-        <div class="card">
-            <h2>Значение в экосистеме</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
-                <div>
-                    <h3>🐟 Пищевая цепь</h3>
-                    <p>Служат пищей для мелких рыб и других планктоноядных животных.</p>
-                </div>
-                <div>
-                    <h3>🦠 Санитары океана</h3>
-                    <p>Фильтруют и очищают морскую воду, потребляя бактерии.</p>
-                </div>
-                <div>
-                    <h3>❄️ Морской снег</h3>
-                    <p>Выброшенные домики опускаются на дно, становясь пищей для глубоководных обитателей.</p>
-                </div>
-            </div>
             
-            <button class="btn" onclick="showFact()">Узнать интересный факт</button>
-            <p id="fact" style="margin-top: 15px; display: none; padding: 15px; background: #e8f4fc; border-radius: 10px;"></p>
+            <!-- КАРТОЧКА 3: Значение в экосистеме -->
+            <div class="card">
+                <h2><i class="fas fa-globe-americas"></i> Роль в океане</h2>
+                <p>Несмотря на микроскопические размеры, аппендикулярии играют огромную роль в морских экосистемах.</p>
+                
+                <div class="image-container">
+                    <!-- Картинка морской экосистемы -->
+                    <img src="https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&auto=format&fit=crop" 
+                         alt="Морская экосистема">
+                </div>
+                
+                <div class="fact-box">
+                    <h3><i class="fas fa-lightbulb"></i> Экологическая ценность:</h3>
+                    <p>«Один грамм аппендикулярий может отфильтровать до 10 литров воды в час!»</p>
+                </div>
+                
+                <h3><i class="fas fa-tasks"></i> Функции в природе:</h3>
+                <ul>
+                    <li><strong>🚰 Фильтрация:</strong> Очищают воду от бактерий</li>
+                    <li><strong>🍽️ Пища:</strong> Корм для мелких рыб и рачков</li>
+                    <li><strong>❄️ Морской снег:</strong> Выброшенные домики кормят глубины</li>
+                    <li><strong>🔬 Биоиндикация:</strong> Показывают здоровье экосистемы</li>
+                </ul>
+                
+                <button class="btn" onclick="showRandomFact()">
+                    <i class="fas fa-question-circle"></i> Узнать интересный факт
+                </button>
+                <div id="factDisplay" style="margin-top: 20px; padding: 15px; background: #f0f8ff; border-radius: 10px; display: none;"></div>
+            </div>
         </div>
         
         <footer>
-            <p>© 2025 Исследовательский проект по биологии. 8 класс</p>
-            <p>Сайт создан для изучения морских хордовых животных</p>
-            <p>Хостинг: GitHub Pages</p>
+            <h3><i class="fas fa-graduation-cap"></i> Научный проект по биологии</h3>
+            <p class="footer-text">8 класс | Изучение морских хордовых животных</p>
+            <p class="footer-text">Аппендикулярии — пример удивительной адаптации в природе</p>
+            <p class="footer-text">Сайт создан с использованием HTML, CSS, JavaScript</p>
+            <p class="footer-text">Хостинг: GitHub Pages | 2025</p>
+            <div class="marine-icons">
+                <i class="fas fa-fish"></i>
+                <i class="fas fa-water"></i>
+                <i class="fas fa-microscope"></i>
+                <i class="fas fa-leaf"></i>
+            </div>
         </footer>
     </div>
+    
+    <div class="water-mark">Морская тема | Аппендикулярии</div>
 
     <script>
-        function showFact() {
-            const facts = [
-                "Аппендикулярии могут строить новый домик всего за 15-20 минут!",
-                "Некоторые виды светятся в темноте (обладают биолюминесценцией).",
-                "За сутки одна аппендикулярия может отфильтровать объем воды, в 100 раз превышающий объем ее тела.",
-                "Их домики настолько хрупкие, что изучать живых аппендикулярий можно только в специальных аквариумах.",
-                "Аппендикулярии — пример неотении: они размножаются, сохраняя личиночные черты строения."
-            ];
+        // Факты об аппендикуляриях
+        const facts = [
+            "Аппендикулярии могут фильтровать объём воды, в 100 раз превышающий их собственный объём тела за сутки!",
+            "Их домики настолько хрупкие, что изучить их можно только с помощью специальных подводных аппаратов.",
+            "Некоторые виды аппендикулярий обладают биолюминесценцией и светятся в темноте сине-зелёным светом.",
+            "Аппендикулярии — пример неотении: они достигают половой зрелости, сохраняя личиночные черты строения.",
+            "Выброшенные домики аппендикулярий составляют до 30% «морского снега» — органического дождя, питающего глубины.",
+            "У аппендикулярий один из самых коротких жизненных циклов среди хордовых — всего 5-7 дней.",
+            "Их гелевые домики состоят из муцина — того же вещества, что и человеческая слизь."
+        ];
+        
+        function showRandomFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            const factDisplay = document.getElementById('factDisplay');
             
-            const randomFact = facts[Math.floor(Math.random() * facts.length)];
-            const factElement = document.getElementById('fact');
+            factDisplay.innerHTML = `
+                <h3><i class="fas fa-star"></i> Факт дня:</h3>
+                <p>${facts[randomIndex]}</p>
+            `;
+            factDisplay.style.display = 'block';
             
-            factElement.innerHTML = `<strong>Интересный факт:</strong> ${randomFact}`;
-            factElement.style.display = 'block';
+            // Автоматическое скрытие через 10 секунд
+            setTimeout(() => {
+                factDisplay.style.display = 'none';
+            }, 10000);
         }
         
-        // Автоматически показываем факт при загрузке
-        setTimeout(showFact, 2000);
+        // Показать случайный факт при загрузке страницы
+        window.addEventListener('load', function() {
+            setTimeout(showRandomFact, 3000);
+        });
+        
+        // Добавляем эффект волн
+        document.addEventListener('scroll', function() {
+            const wave = document.querySelector('.ocean-waves');
+            const scrolled = window.pageYOffset;
+            wave.style.backgroundPosition = `${-scrolled * 0.5}px 0`;
+        });
     </script>
 </body>
 </html>
