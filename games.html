@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровая зона | Проект 8 класса</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Шапка с неоновым эффектом */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 3px solid #00ff88;
+            box-shadow: 0 0 20px #00ff88;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Навигация */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background: #00ff88;
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00ff88;
+        }
+
+        /* Игровая сетка */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .game-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid;
+            transition: transform 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .game-card h2 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            color: #00ccff;
+        }
+
+        /* Кнопка игры */
+        .play-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff0080, #ff8c00);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff0080;
+        }
+
+        /* Игровые поля */
+        .game-area {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #444;
+            min-height: 200px;
+            position: relative;
+        }
+
+        /* Стили для конкретных игр */
+        #quizArea {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+        }
+
+        #dinoCanvas {
+            background: #111;
+            display: block;
+            margin: 0 auto;
+            border: 3px solid #00ff88;
+            border-radius: 10px;
+        }
+
+        /* Реакция */
+        #reactionBox {
+            width: 100%;
+            height: 200px;
+            background: #222;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            user-select: none;
+        }
+
+        /* Рейтинг */
+        .score {
+            font-size: 1.5rem;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            margin-top: 50px;
+            border-top: 3px solid #00ccff;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Анимации */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+
+        /* Частицы */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые частицы -->
+    <canvas class="particles" id="particles"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>🎮 ИГРОВАЯ ЗОНА</h1>
+            <p class="subtitle">Отвлекись от уроков и разомни мозги!</p>
+            <div class="nav">
+                <a href="index.html" class="nav-btn">🔬 На главную (Аппендикулярии)</a>
+                <button class="nav-btn" onclick="resetAllGames()">🔄 Сбросить все игры</button>
+            </div>
+        </header>
+
+        <div class="games-grid">
+            <!-- Игра 1: Викторина -->
+            <div class="game-card" style="border-color: #00ff88;">
+                <h2>🧠 Викторина по биологии</h2>
+                <p>Проверь свои знания! 5 вопросов о морских обитателях.</p>
+                <div class="score" id="quizScore">Счёт: 0/5</div>
+                <button class="play-btn" onclick="startQuiz()">Начать викторину</button>
+                <div class="game-area" id="quizArea">
+                    <!-- Здесь будут появляться вопросы -->
+                </div>
+            </div>
+
+            <!-- Игра 2: Динозавр -->
+            <div class="game-card" style="border-color: #ff0080;">
+                <h2>🦕 Бегущий динозавр</h2>
+                <p>Прыгай через кактусы! Нажми ПРОБЕЛ для прыжка.</p>
+                <div class="score" id="dinoScore">Рекорд: 0</div>
+                <button class="play-btn" onclick="startDinoGame()">Запустить игру</button>
+                <div class="game-area">
+                    <canvas id="dinoCanvas" width="350" height="150"></canvas>
+                </div>
+            </div>
+
+            <!-- Игра 3: Реакция -->
+            <div class="game-card" style="border-color: #00ccff;">
+                <h2>⚡ Тест на реакцию</h2>
+                <p>Кликни, когда квадрат станет зелёным. Чем быстрее — тем лучше!</p>
+                <div class="score" id="reactionScore">Лучшее время: 0 мс</div>
+                <div class="game-area">
+                    <div id="reactionBox" onclick="handleReactionClick()">
+                        Жди зелёного цвета...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Игра 4: Пазл -->
+            <div class="game-card" style="border-color: #ffd700;">
+                <h2>🧩 Морской пазл</h2>
+                <p>Собери картинку с аппендикулярией. Перетаскивай кусочки.</p>
+                <div class="score" id="puzzleMoves">Ходы: 0</div>
+                <button class="play-btn" onclick="createPuzzle()">Создать пазл</button>
+                <div class="game-area" id="puzzleArea">
+                    <!-- Пазл появится здесь -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Дополнительные развлечения -->
+        <div class="game-card" style="border-color: #9d4edd; margin-top: 30px;">
+            <h2>🎵 Музыкальный проигрыватель</h2>
+            <p>Слушай фоновую музыку во время игры</p>
+            <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                <button class="play-btn" style="background: linear-gradient(45deg, #9d4edd, #560bad);" onclick="playMusic('relax')">🌊 Расслабляющая</button>
+                <button class="play-btn" style="background: linear-gradient(45deg, #ff006e, #fb5607);" onclick="playMusic('game')">🎮 Игровая</button>
+                <button class="play-btn" style="background: linear-gradient(45deg, #3a86ff, #8338ec);" onclick="stopMusic()">⏹️ Стоп</button>
+                <input type="range" id="volume" min="0" max="100" value="50" style="width: 200px;">
+            </div>
+            <div id="nowPlaying" style="margin-top: 15px; color: #aaa;"></div>
+        </div>
+
+        <footer>
+            <h3>Игровая страница проекта 8 класса</h3>
+            <p>Сделано с использованием HTML, CSS и JavaScript</p>
+            <p>2026 | Для развлечения и развития реакции</p>
+            <p style="margin-top: 15px; color: #00ff88;">
+                🎯 Помни: игры — это хорошо, но учёба важнее!
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== ЧАСТИЦЫ НА ФОНЕ ====================
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // ==================== ВИКТОРИНА ====================
+        const quizQuestions = [
+            {
+                question: "Какой размер у аппендикулярий?",
+                options: ["0,5-3 см", "10-20 см", "1-2 мм", "5-10 м"],
+                correct: 0
+            },
+            {
+                question: "Из чего они строят домики?",
+                options: ["Из слизи", "Из песка", "Из водорослей", "Из ракушек"],
+                correct: 0
+            },
+            {
+                question: "Сколько времени нужно для постройки нового домика?",
+                options: ["15-20 минут", "1 час", "5 минут", "1 день"],
+                correct: 0
+            },
+            {
+                question: "К какому типу животных они относятся?",
+                options: ["Хордовые", "Членистоногие", "Моллюски", "Иглокожие"],
+                correct: 0
+            },
+            {
+                question: "Чем питаются аппендикулярии?",
+                options: ["Бактериями", "Рыбой", "Водорослями", "Планктоном"],
+                correct: 0
+            }
+        ];
+
+        let quizScore = 0;
+        let currentQuestion = 0;
+
+        function startQuiz() {
+            quizScore = 0;
+            currentQuestion = 0;
+            document.getElementById('quizScore').textContent = 'Счёт: 0/5';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const area = document.getElementById('quizArea');
+            if (currentQuestion >= quizQuestions.length) {
+                area.innerHTML = `<h3>Викторина завершена!</h3><p>Ваш результат: ${quizScore}/5</p>`;
+                if (quizScore === 5) area.innerHTML += '<p style="color:#00ff88">🎉 Отлично! Вы эксперт!</p>';
+                return;
+            }
+
+            const q = quizQuestions[currentQuestion];
+            area.innerHTML = `
+                <h3>Вопрос ${currentQuestion + 1}/5</h3>
+                <p><strong>${q.question}</strong></p>
+                ${q.options.map((opt, idx) => `
+                    <div class="quiz-option" onclick="checkAnswer(${idx})">
+                        ${opt}
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function checkAnswer(selected) {
+            const q = quizQuestions[currentQuestion];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            options.forEach((opt, idx) => {
+                if (idx === q.correct) {
+                    opt.style.background = 'rgba(0, 255, 136, 0.3)';
+                    opt.style.borderColor = '#00ff88';
+                } else if (idx === selected) {
+                    opt.style.background = 'rgba(255, 0, 0, 0.3)';
+                    opt.style.borderColor = '#ff0000';
+                }
+                opt.style.pointerEvents = 'none';
+            });
+
+            if (selected === q.correct) {
+                quizScore++;
+                document.getElementById('quizScore').textContent = `Счёт: ${quizScore}/5`;
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                showQuestion();
+            }, 1500);
+        }
+
+        // ==================== ДИНОЗАВР ИГРА ====================
+        const dinoCanvas = document.getElementById('dinoCanvas');
+        const dinoCtx = dinoCanvas.getContext('2d');
+        let dinoGameRunning = false;
+        let dinoY = 100;
+        let dinoVelocity = 0;
+        let gravity = 0.5;
+        let cacti = [];
+        let dinoScore = 0;
+        let gameSpeed = 3;
+
+        function startDinoGame() {
+            dinoGameRunning = true;
+            dinoY = 100;
+            dinoVelocity = 0;
+            cacti = [];
+            dinoScore = 0;
+            gameSpeed = 3;
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!dinoGameRunning) return;
+            
+            dinoCtx.clearRect(0, 0, dinoCanvas.width, dinoCanvas.height);
+            
+            // Динозавр
+            dinoVelocity += gravity;
+            dinoY += dinoVelocity;
+            if (dinoY > 100) dinoY = 100;
+            
+            dinoCtx.fillStyle = '#00ff88';
+            dinoCtx.fillRect(50, dinoY, 20, 40);
+            
+            // Кактусы
+            if (Math.random() < 0.02) {
+                cacti.push({ x: dinoCanvas.width, height: 20 + Math.random() * 30 });
+            }
+            
+            cacti.forEach((cactus, index) => {
+                cactus.x -= gameSpeed;
+                dinoCtx.fillStyle = '#ff0080';
+                dinoCtx.fillRect(cactus.x, dinoCanvas.height - cactus.height, 15, cactus.height);
+                
+                // Столкновение
+                if (cactus.x < 70 && cactus.x > 30 && dinoY > (dinoCanvas.height - cactus.height - 40)) {
+                    dinoGameRunning = false;
+                    alert(`Игра окончена! Счёт: ${dinoScore}`);
+                }
+                
+                // Удалить пройденные кактусы
+                if (cactus.x < -15) {
+                    cacti.splice(index, 1);
+                    dinoScore++;
+                    document.getElementById('dinoScore').textContent = `Рекорд: ${dinoScore}`;
+                    gameSpeed += 0.1;
+                }
+            });
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && dinoGameRunning && dinoY === 100) {
+                dinoVelocity = -10;
+            }
+        });
+
+        dinoCanvas.addEventListener('click', () => {
+            if (dinoGameRunning && dinoY === 100) {
+                dinoVelocity = -10;
+            }
+        });
+
+        // ==================== ТЕСТ НА РЕАКЦИЮ ====================
+        let reactionStartTime;
+        let reactionBestTime = localStorage.getItem('reactionBest') || 0;
+        document.getElementById('reactionScore').textContent = `Лучшее время: ${reactionBestTime} мс`;
+
+        function startReactionTest() {
+            const box = document.getElementById('reactionBox');
+            box.style.background = '#222';
+            box.textContent = 'Жди зелёного цвета...';
+            box.style.cursor = 'default';
+            
+            setTimeout(() => {
+                box.style.background = '#00ff88';
+                box.textContent = 'КЛИКАЙ СЕЙЧАС!';
+                reactionStartTime = Date.now();
+                box.style.cursor = 'pointer';
+            }, 1000 + Math.random() * 3000);
+        }
+
+        function handleReactionClick() {
+            const box = document.getElementById('reactionBox');
+            if (box.style.background === 'rgb(0, 255, 136)') {
+                const reactionTime = Date.now() - reactionStartTime;
+                box.textContent = `Ваша реакция: ${reactionTime} мс`;
+                box.style.background = '#3a86ff';
+                
+                if (reactionTime < reactionBestTime || reactionBestTime === 0) {
+                    reactionBestTime = reactionTime;
+                    localStorage.setItem('reactionBest', reactionTime);
+                    document.getElementById('reactionScore').textContent = `Лучшее время: ${reactionTime} мс`;
+                }
+                
+                setTimeout(startReactionTest, 2000);
+            }
+        }
+
+        // ==================== ПАЗЛ ====================
+        function createPuzzle() {
+            const area = document.getElementById('puzzleArea');
+            area.innerHTML = '';
+            
+            const pieces = 9;
+            for (let i = 0; i < pieces; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.style.cssText = `
+                    width: 60px;
+                    height: 60px;
+                    background: hsl(${i * 40}, 70%, 60%);
+                    display: inline-block;
+                    margin: 2px;
+                    border-radius: 5px;
+                    cursor: move;
+                    user-select: none;
+                    text-align: center;
+                    line-height: 60px;
+                    font-weight: bold;
+                `;
+                piece.textContent = i + 1;
+                piece.draggable = true;
+                
+                piece.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', i);
+                });
+                
+                piece.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                
+                piece.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toIndex = i;
+                    swapPieces(fromIndex, toIndex);
+                });
+                
+                area.appendChild(piece);
+            }
+            
+            shufflePuzzle();
+            updatePuzzleMoves();
+        }
+
+        let puzzleMoves = 0;
+        let puzzlePieces = [];
+
+        function shufflePuzzle() {
+            const pieces = document.querySelectorAll('.puzzle-piece');
+            puzzlePieces = Array.from(pieces);
+            
+            for (let i = puzzlePieces.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                puzzlePieces[i].parentNode.insertBefore(puzzlePieces[j], puzzlePieces[i]);
+            }
+        }
+
+        function swapPieces(from, to) {
+            if (from === to) return;
+            
+            const pieces = document.querySelectorAll('.puzzle-piece');
+            const parent = pieces[0].parentNode;
+            
+            parent.insertBefore(pieces[from], pieces[to]);
+            puzzleMoves++;
+            updatePuzzleMoves();
+        }
+
+        function updatePuzzleMoves() {
+            document.getElementById('puzzleMoves').textContent = `Ходы: ${puzzleMoves}`;
+        }
+
+        // ==================== МУЗЫКА ====================
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let currentOscillator;
+
+        function playMusic(type) {
+            stopMusic();
+            
+            currentOscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const volume = document.getElementById('volume').value / 100;
+            
+            gainNode.gain.value = volume * 0.1;
+            
+            if (type === 'relax') {
+                currentOscillator.type = 'sine';
+                currentOscillator.frequency.value = 440;
+            } else {
+                currentOscillator.type = 'square';
+                currentOscillator.frequency.value = 220;
+            }
+            
+            currentOscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            currentOscillator.start();
+            
+            document.getElementById('nowPlaying').textContent = 
+                `Сейчас играет: ${type === 'relax' ? '🌊 Расслабляющая музыка' : '🎮 Игровая музыка'}`;
+        }
+
+        function stopMusic() {
+            if (currentOscillator) {
+                currentOscillator.stop();
+                currentOscillator = null;
+            }
+            document.getElementById('nowPlaying').textContent = 'Музыка остановлена';
+        }
+
+        document.getElementById('volume').addEventListener('input', (e) => {
+            if (currentOscillator) {
+                playMusic('relax'); // Перезапускаем с новым уровнем громкости
+            }
+        });
+
+        // ==================== ОБЩИЕ ФУНКЦИИ ====================
+        function resetAllGames() {
+            if (confirm("Сбросить все игры и счёт?")) {
+                // Сброс викторины
+                quizScore = 0;
+                currentQuestion = 0;
+                document.getElementById('quizScore').textContent = 'Счёт: 0/5';
+                document.getElementById('quizArea').innerHTML = '';
+                
+                // Сброс динозавра
+                dinoGameRunning = false;
+                dinoScore = 0;
+                document.getElementById('dinoScore').textContent = 'Рекорд: 0';
+                dinoCtx.clearRect(0, 0, dinoCanvas.width, dinoCanvas.height);
+                
+                // Сброс реакции
+                reactionBestTime = 0;
+                localStorage.removeItem('reactionBest');
+                document.getElementById('reactionScore').textContent = 'Лучшее время: 0 мс';
+                document.getElementById('reactionBox').style.background = '#222';
+                document.getElementById('reactionBox').textContent = 'Жди зелёного цвета...';
+                
+                // Сброс пазла
+                puzzleMoves = 0;
+                document.getElementById('puzzleMoves').textContent = 'Ходы: 0';
+                document.getElementById('puzzleArea').innerHTML = '';
+                
+                // Сброс музыки
+                stopMusic();
+                
+                alert('Все игры сброшены!');
+            }
+        }
+
+        // ==================== ЗАПУСК ВСЕГО ====================
+        window.onload = function() {
+            initParticles();
+            animateParticles();
+            startReactionTest();
+            createPuzzle();
+            
+            // Автозапуск викторины через 2 секунды
+            setTimeout(() => {
+                if (document.getElementById('quizArea').innerHTML === '') {
+                    startQuiz();
+                }
+            }, 2000);
+        };
+    </script>
+</body>
+</html>
