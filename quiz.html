@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Викторина про аппендикулярии | 8 класс</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a2e5c, #1a5f9c);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1a5f9c;
+        }
+
+        h1 {
+            color: #0a2e5c;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #1a5f9c;
+            font-size: 1.2rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: #1a5f9c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #0a2e5c;
+            transform: scale(1.05);
+        }
+
+        .quiz-stats {
+            display: flex;
+            justify-content: space-around;
+            background: #e6f7ff;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0a2e5c;
+        }
+
+        /* Вопросы викторины */
+        .quiz-area {
+            margin: 30px 0;
+        }
+
+        .question-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #1a5f9c;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #0a2e5c;
+            font-weight: bold;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            border-color: #1a5f9c;
+            background: #e6f7ff;
+        }
+
+        .option-btn.selected {
+            background: #1a5f9c;
+            color: white;
+            border-color: #0a2e5c;
+        }
+
+        .option-btn.correct {
+            background: #4CAF50;
+            color: white;
+            border-color: #388E3C;
+        }
+
+        .option-btn.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+        .next-btn {
+            display: block;
+            margin: 20px auto;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .next-btn:hover {
+            background: #388E3C;
+            transform: scale(1.05);
+        }
+
+        .next-btn.hidden {
+            display: none;
+        }
+
+        /* Результаты */
+        .results-box {
+            text-align: center;
+            padding: 30px;
+            background: #e8f5e9;
+            border-radius: 15px;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .results-box h2 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .feedback.good {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .feedback.average {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .feedback.poor {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        /* Объяснение ответа */
+        .explanation-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #2196F3;
+            display: none;
+        }
+
+        /* Прогресс бар */
+        .progress-container {
+            width: 100%;
+            background: #eee;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #1a5f9c, #4CAF50);
+            width: 0%;
+            transition: width 0.5s;
+            border-radius: 10px;
+        }
+
+        /* Картинки в вопросах */
+        .question-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 3px solid #1a5f9c;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Таймер */
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff9800;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .timer.warning {
+            background: #f44336;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Таймер -->
+    <div class="timer" id="timer">⏱️ 30:00</div>
+
+    <div class="container">
+        <header>
+            <h1>🧪 Викторина про аппендикулярии</h1>
+            <p class="subtitle">Проверь свои знания по теме проекта!</p>
+            
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn">🏠 На главную</a>
+                <a href="games.html" class="nav-btn">🎮 Игровая зона</a>
+                <button class="nav-btn" onclick="startNewQuiz()">🔄 Начать заново</button>
+            </div>
+
+            <div class="quiz-stats">
+                <div class="stat-box">
+                    <div class="stat-label">Вопрос</div>
+                    <div class="stat-value" id="currentQuestion">1/10</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Счёт</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Верных</div>
+                    <div class="stat-value" id="correctCount">0</div>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </header>
+
+        <!-- Область с вопросами -->
+        <div class="quiz-area" id="quizArea">
+            <!-- Вопросы будут загружаться сюда -->
+        </div>
+
+        <!-- Кнопка дальше -->
+        <button class="next-btn hidden" id="nextBtn" onclick="nextQuestion()">Далее →</button>
+
+        <!-- Результаты -->
+        <div class="results-box" id="resultsBox">
+            <h2>🎉 Викторина завершена!</h2>
+            <div class="score-circle" id="finalScore">0/10</div>
+            <h3 id="resultTitle"></h3>
+            <p id="resultMessage"></p>
+            <div class="feedback" id="resultFeedback"></div>
+            
+            <div style="margin-top: 30px;">
+                <button class="nav-btn" onclick="startNewQuiz()">🔄 Пройти ещё раз</button>
+                <a href="index.html" class="nav-btn">🏠 На главную</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Викторина по проекту "Аппендикулярии" | 8 класс биология</p>
+            <p>Все вопросы основаны на материалах проекта | 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== ДАННЫЕ ВИКТОРИНЫ ====================
+        const quizData = [
+            {
+                question: "Какой размер у аппендикулярий?",
+                image: "https://inaturalist-open-data.s3.amazonaws.com/photos/50498509/medium.jpg",
+                options: [
+                    "0,5-3 см (как рисовое зерно)",
+                    "10-20 см (как ладонь)",
+                    "1-2 мм (как песчинка)",
+                    "5-10 м (как большой кит)"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии действительно очень маленькие — от 0,5 до 3 сантиметров. Их можно сравнить с рисовым зернышком."
+            },
+            {
+                question: "Из чего аппендикулярии строят свои домики?",
+                image: "https://cf2.ppt-online.org/files2/slide/z/ZhoAnigeGIlR2Fdc4f0q8vVw5tTbrNSpLDBC6OYQ3M/slide-15.jpg",
+                options: [
+                    "Из слизи (муцина)",
+                    "Из водорослей",
+                    "Из песка и ракушек",
+                    "Из известняка"
+                ],
+                correct: 0,
+                explanation: "Домики строятся из особого гелеобразного вещества — муцина. Это тот же материал, что и человеческая слизь."
+            },
+            {
+                question: "Сколько времени нужно аппендикулярии для постройки нового домика?",
+                options: [
+                    "15-20 минут",
+                    "1 час",
+                    "3-4 часа",
+                    "Целый день"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии могут построить новый домик всего за 15-20 минут! Это одна из самых быстрых строительных работ в природе."
+            },
+            {
+                question: "Зачем аппендикуляриям нужны домики?",
+                options: [
+                    "Для фильтрации воды и питания",
+                    "Только для защиты от хищников",
+                    "Для размножения",
+                    "Для передвижения в воде"
+                ],
+                correct: 0,
+                explanation: "Домик работает как сложный фильтр. Через него проходит вода, и аппендикулярия ловит из неё мелкие частицы пищи."
+            },
+            {
+                question: "Как часто аппендикулярии меняют свои домики?",
+                options: [
+                    "Каждые 3-4 часа (до 6 раз в сутки)",
+                    "Раз в неделю",
+                    "Раз в месяц",
+                    "Никогда не меняют"
+                ],
+                correct: 0,
+                explanation: "Фильтры быстро засоряются, поэтому аппендикулярии покидают старые домики и строят новые каждые 3-4 часа."
+            },
+            {
+                question: "К какому типу животных относятся аппендикулярии?",
+                image: "https://paleontol.ru/wp-content/uploads/2020/12/drctewqv4aay9tq.jpg",
+                options: [
+                    "Хордовые",
+                    "Членистоногие",
+                    "Моллюски",
+                    "Иглокожие"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии относятся к типу Хордовые. Это значит, что они дальние родственники рыб, птиц и даже человека!"
+            },
+            {
+                question: "Чем питаются аппендикулярии?",
+                options: [
+                    "Бактериями и мельчайшими водорослями",
+                    "Мелкой рыбой",
+                    "Другими аппендикуляриями",
+                    "Не питаются вообще"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии фильтруют воду и питаются мельчайшими организмами — бактериями и нанопланктоном."
+            },
+            {
+                question: "Что происходит со старыми домиками аппендикулярий?",
+                options: [
+                    "Они тонут и кормят глубоководных животных",
+                    "Они растворяются в воде",
+                    "Их съедают другие аппендикулярии",
+                    "Они плавают на поверхности"
+                ],
+                correct: 0,
+                explanation: "Выброшенные домики медленно тонут, образуя «морской снег». Это важный источник пищи для обитателей морских глубин."
+            },
+            {
+                question: "Где живут аппендикулярии?",
+                options: [
+                    "Во всех океанах мира",
+                    "Только в тропических морях",
+                    "Только в холодных водах",
+                    "Только около берега"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии встречаются во всех океанах — от тропиков до полярных вод. Они очень распространены."
+            },
+            {
+                question: "Почему аппендикулярии важны для экосистемы океана?",
+                image: "https://avatars.mds.yandex.net/i?id=3eb8a338c2d077e27cef9c2f517f2689_sr-4828361-images-thumbs&n=13&w=690&h=460",
+                options: [
+                    "Очищают воду и являются пищей для других",
+                    "Создают коралловые рифы",
+                    "Производят кислород",
+                    "Никакой важной роли не играют"
+                ],
+                correct: 0,
+                explanation: "Аппендикулярии очищают воду от бактерий и сами служат пищей для мелких рыб. Они важное звено в пищевой цепи."
+            }
+        ];
+
+        // ==================== ПЕРЕМЕННЫЕ ====================
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let userAnswers = [];
+        let timerInterval;
+        let timeLeft = 1800; // 30 минут в секундах
+
+        // ==================== ФУНКЦИИ ====================
+        function updateTimer() {
+            timeLeft--;
+            if (timeLeft < 0) {
+                timeLeft = 0;
+                finishQuiz();
+            }
+            
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `⏱️ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft < 300) { // 5 минут
+                timerElement.classList.add('warning');
+            }
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timeLeft = 1800;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function loadQuestion() {
+            const quizArea = document.getElementById('quizArea');
+            const currentQuestion = quizData[currentQuestionIndex];
+            
+            let imageHtml = '';
+            if (currentQuestion.image) {
+                imageHtml = `<img src="${currentQuestion.image}" alt="Иллюстрация" class="question-image" onerror="this.style.display='none'">`;
+            }
+            
+            const optionsHtml = currentQuestion.options.map((option, index) => `
+                <button class="option-btn" onclick="selectAnswer(${index})">
+                    ${option}
+                </button>
+            `).join('');
+            
+            quizArea.innerHTML = `
+                <div class="question-box fade-in">
+                    <div class="question-text">Вопрос ${currentQuestionIndex + 1}: ${currentQuestion.question}</div>
+                    ${imageHtml}
+                    <div class="options-grid">
+                        ${optionsHtml}
+                    </div>
+                    <div class="explanation-box" id="explanationBox"></div>
+                </div>
+            `;
+            
+            document.getElementById('nextBtn').classList.add('hidden');
+            
+            // Обновляем прогресс
+            updateProgress();
+            updateStats();
+        }
+
+        function selectAnswer(selectedIndex) {
+            const currentQuestion = quizData[currentQuestionIndex];
+            const optionButtons = document.querySelectorAll('.option-btn');
+            const nextBtn = document.getElementById('nextBtn');
+            const explanationBox = document.getElementById('explanationBox');
+            
+            // Запоминаем ответ пользователя
+            userAnswers[currentQuestionIndex] = selectedIndex;
+            
+            // Показываем правильный/неправильный ответ
+            optionButtons.forEach((btn, index) => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+                btn.disabled = true;
+                
+                if (index === currentQuestion.correct) {
+                    btn.classList.add('correct');
+                }
+                
+                if (index === selectedIndex) {
+                    btn.classList.add('selected');
+                    if (index === currentQuestion.correct) {
+                        score += 10;
+                        correctAnswers++;
+                    } else {
+                        btn.classList.add('incorrect');
+                    }
+                }
+            });
+            
+            // Показываем объяснение
+            explanationBox.innerHTML = `<strong>Объяснение:</strong> ${currentQuestion.explanation}`;
+            explanationBox.style.display = 'block';
+            
+            // Показываем кнопку "Далее"
+            nextBtn.classList.remove('hidden');
+            
+            // Обновляем статистику
+            updateStats();
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+            
+            const quizArea = document.getElementById('quizArea');
+            const nextBtn = document.getElementById('nextBtn');
+            const resultsBox = document.getElementById('resultsBox');
+            const finalScoreElement = document.getElementById('finalScore');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+            const resultFeedback = document.getElementById('resultFeedback');
+            
+            quizArea.style.display = 'none';
+            nextBtn.style.display = 'none';
+            
+            const percentage = Math.round((correctAnswers / quizData.length) * 100);
+            finalScoreElement.textContent = `${score}/${quizData.length * 10}`;
+            
+            let feedbackText = '';
+            let feedbackClass = '';
+            
+            if (percentage >= 90) {
+                resultTitle.textContent = "🎖️ Отличный результат!";
+                resultMessage.textContent = "Вы настоящий эксперт по аппендикуляриям!";
+                feedbackText = "Вы знаете об аппендикуляриях почти всё! Можете смело рассказывать о них одноклассникам.";
+                feedbackClass = "good";
+            } else if (percentage >= 70) {
+                resultTitle.textContent = "👍 Хороший результат!";
+                resultMessage.textContent = "Вы хорошо разбираетесь в теме!";
+                feedbackText = "Вы правильно ответили на большинство вопросов. Есть ещё что повторить, но в целом отлично!";
+                feedbackClass = "average";
+            } else if (percentage >= 50) {
+                resultTitle.textContent = "😊 Неплохой результат!";
+                resultMessage.textContent = "Вы знаете основные факты!";
+                feedbackText = "Вы усвоили базовую информацию об аппендикуляриях. Советую ещё раз посмотреть материалы проекта.";
+                feedbackClass = "average";
+            } else {
+                resultTitle.textContent = "📚 Есть что повторить!";
+                resultMessage.textContent = "Вернитесь к материалам проекта!";
+                feedbackText = "Похоже, вы не совсем внимательно изучили материалы. Рекомендую ещё раз прочитать информацию на главной странице.";
+                feedbackClass = "poor";
+            }
+            
+            resultFeedback.textContent = feedbackText;
+            resultFeedback.className = `feedback ${feedbackClass}`;
+            
+            resultsBox.style.display = 'block';
+        }
+
+        function startNewQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswers = 0;
+            userAnswers = [];
+            
+            document.getElementById('quizArea').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('resultsBox').style.display = 'none';
+            
+            startTimer();
+            loadQuestion();
+        }
+
+        function updateStats() {
+            document.getElementById('currentQuestion').textContent = `${currentQuestionIndex + 1}/${quizData.length}`;
+            document.getElementById('score').textContent = score;
+            document.getElementById('correctCount').textContent = correctAnswers;
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // ==================== ЗАПУСК ====================
+        window.onload = function() {
+            startTimer();
+            loadQuestion();
+        };
+
+        // ==================== КЛАВИАТУРНЫЕ СОКРАЩЕНИЯ ====================
+        document.addEventListener('keydown', function(event) {
+            if (event.key >= '1' && event.key <= '4') {
+                const index = parseInt(event.key) - 1;
+                const optionButtons = document.querySelectorAll('.option-btn');
+                if (optionButtons.length > index && !optionButtons[index].disabled) {
+                    selectAnswer(index);
+                }
+            }
+            
+            if (event.key === 'Enter' || event.key === ' ') {
+                const nextBtn = document.getElementById('nextBtn');
+                if (!nextBtn.classList.contains('hidden')) {
+                    nextQuestion();
+                }
+            }
+            
+            if (event.key === 'r' || event.key === 'R') {
+                startNewQuiz();
+            }
+        });
+    </script>
+</body>
+</html>
